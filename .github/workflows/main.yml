@@ -28,5 +28,7 @@ jobs:
         uses: actions/setup-node@v2.3.0
         with:
           node-version: 16.4.1
+      - name: Install
+        run: npm install
       - name: Test
         run: npm run test 

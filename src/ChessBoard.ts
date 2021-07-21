@@ -1,6 +1,5 @@
-import { off } from 'process'
 import BishopPiece from './BishopPiece'
-import ChessPiece, { Color, MoveInformation, Position, Type } from './ChessPiece'
+import ChessPiece, { Color, MoveInformation, Position } from './ChessPiece'
 import KingPiece from './KingPiece'
 import KnightPiece from './KnightPiece'
 import PawnPiece from './PawnPiece'
@@ -122,12 +121,7 @@ export default class ChessBoard {
     const prunedMoves: MoveInformation[] = []
     allMoves.forEach(move => {
       const boardClone = this.clone()
-      console.log('---- Before')
-      boardClone.prettyPrint()
       boardClone.applyMove(move)
-      console.log('---- After')
-      boardClone.prettyPrint()
-
       if (!boardClone.isMyKingUnderCheck()) {
         prunedMoves.push(move)
       }
@@ -302,31 +296,17 @@ export default class ChessBoard {
     return null
   }
 
-  public placePiece(color: Color, position: Position, type: Type): ChessBoard {
+  public placePiece<T extends ChessPiece>(
+    color: Color,
+    position: Position,
+    type: { new (...args: any[]): T }
+  ): ChessBoard {
     if (this.getPieceAtPosition(position) !== null) {
       throw new Error('square is already occupied')
     }
 
-    switch (type) {
-      case Type.PAWN:
-        this.pieces.push(new PawnPiece(color, position, this))
-        break
-      case Type.ROOK:
-        this.pieces.push(new RookPiece(color, position, this))
-        break
-      case Type.KNIGHT:
-        this.pieces.push(new KnightPiece(color, position, this))
-        break
-      case Type.BISHOP:
-        this.pieces.push(new BishopPiece(color, position, this))
-        break
-      case Type.QUEEN:
-        this.pieces.push(new QueenPiece(color, position, this))
-        break
-      case Type.KING:
-        this.pieces.push(new KingPiece(color, position, this))
-        break
-    }
+    const piece = new type(color, position, this)
+    this.pieces.push(piece)
     return this
   }
 

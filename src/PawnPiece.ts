@@ -1,9 +1,9 @@
 import ChessBoard from './ChessBoard'
-import ChessPiece, { Color, Type, Position, MoveInformation } from './ChessPiece'
+import ChessPiece, { Color, PieceType, Position, MoveInformation } from './ChessPiece'
 
 export default class PawnPiece extends ChessPiece {
   constructor(color: Color, position: Position, board: ChessBoard) {
-    super(Type.PAWN, color, position, board)
+    super(color, position, board)
   }
 
   private isFirstMove(): Boolean {
@@ -60,5 +60,8 @@ export default class PawnPiece extends ChessPiece {
     }
 
     return validSquares
+  }
+  public getType(): PieceType {
+    return 'Pawn'
   }
 }

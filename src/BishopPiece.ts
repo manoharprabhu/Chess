@@ -1,10 +1,9 @@
-import { start } from 'repl'
 import ChessBoard from './ChessBoard'
-import ChessPiece, { Color, Type, Position, MoveInformation } from './ChessPiece'
+import ChessPiece, { Color, Position, MoveInformation } from './ChessPiece'
 
 export default class BishopPiece extends ChessPiece {
   constructor(color: Color, position: Position, board: ChessBoard) {
-    super(Type.BISHOP, color, position, board)
+    super(color, position, board)
   }
 
   private offsets: Position[] = [

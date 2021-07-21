@@ -1,13 +1,11 @@
 import ChessBoard from './ChessBoard'
 
 export default abstract class ChessPiece {
-  protected type: Type
   protected color: Color
   protected position: Position
   protected board: ChessBoard
 
-  constructor(type: Type, color: Color, position: Position, board: ChessBoard) {
-    this.type = type
+  constructor(color: Color, position: Position, board: ChessBoard) {
     this.color = color
     this.position = position
     this.board = board
@@ -53,15 +51,6 @@ export interface MoveInformation {
   start: Position
   end: Position
   isCapture: Boolean
-}
-
-export enum Type {
-  PAWN,
-  ROOK,
-  KNIGHT,
-  BISHOP,
-  QUEEN,
-  KING
 }
 
 export enum Color {

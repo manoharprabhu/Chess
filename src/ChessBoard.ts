@@ -287,14 +287,14 @@ export default class ChessBoard {
 
   private moveInformationSorter(a: MoveInformation, b: MoveInformation): number {
     if (a.end.row < b.end.row) {
-      return 1
-    } else if (a.end.row > b.end.row) {
       return -1
+    } else if (a.end.row > b.end.row) {
+      return 1
     } else {
       if (a.end.column < b.end.column) {
-        return 1
-      } else if (a.end.column > b.end.column) {
         return -1
+      } else if (a.end.column > b.end.column) {
+        return 1
       } else {
         return 0
       }
@@ -341,7 +341,7 @@ export default class ChessBoard {
 
     const allMoves = piece.generateValidMovePositions()
     const validMoves = this.pruneMoves(allMoves)
-    // validMoves.sort(this.moveInformationSorter)
+    validMoves.sort(this.moveInformationSorter)
     return validMoves
   }
 

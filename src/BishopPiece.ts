@@ -32,7 +32,7 @@ export default class BishopPiece extends ChessPiece {
         if (piece.isOppositeColor(this)) {
           moves.push({ start: startPosition, end: newPos, isCapture: true })
         }
-        break
+        return moves
       }
       currentPosition = newPos
     }

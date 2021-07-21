@@ -39,6 +39,33 @@ export default abstract class ChessPiece {
     return true
   }
 
+  protected traverseAndFindMoves(startPosition: Position, direction: Position): MoveInformation[] {
+    let currentPosition: Position = startPosition
+    const moves: MoveInformation[] = []
+    for (let i = 1; i <= 8; i++) {
+      const newPos: Position = {
+        row: currentPosition.row + direction.row,
+        column: currentPosition.column + direction.column
+      }
+      if (!this.isPositionInBounds(newPos)) {
+        break
+      }
+
+      const piece = this.board.getPieceAtPosition(newPos)
+      if (piece === null) {
+        moves.push({ start: startPosition, end: newPos, isCapture: false })
+      } else {
+        if (piece.isOppositeColor(this)) {
+          moves.push({ start: startPosition, end: newPos, isCapture: true })
+        }
+        break
+      }
+      currentPosition = newPos
+    }
+
+    return moves
+  }
+
   public abstract generateValidMovePositions(): MoveInformation[]
 }
 

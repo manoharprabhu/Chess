@@ -7,7 +7,7 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-const libraryName = 'chessplayer'
+const libraryName = 'ChessBoard'
 
 export default {
   input: `src/${libraryName}.ts`,

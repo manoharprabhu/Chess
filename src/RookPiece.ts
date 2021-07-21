@@ -19,7 +19,9 @@ export default class RookPiece extends ChessPiece {
 
     for (let i = 0; i < this.offsets.length; i++) {
       const result = this.traverseAndFindMoves(startPosition, this.offsets[i])
-      moves.push(...result)
+      result.forEach(move => {
+        moves.push(move)
+      })
     }
     return moves
   }

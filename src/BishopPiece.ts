@@ -41,7 +41,6 @@ export default class BishopPiece extends ChessPiece {
   }
 
   public generateValidMovePositions(): MoveInformation[] {
-    // Top Right Diagonal
     const startPosition = this.getPosition()
     const moves: MoveInformation[] = []
 

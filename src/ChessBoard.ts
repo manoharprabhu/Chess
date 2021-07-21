@@ -285,6 +285,22 @@ export default class ChessBoard {
     return -1
   }
 
+  private moveInformationSorter(a: MoveInformation, b: MoveInformation): number {
+    if (a.end.row < b.end.row) {
+      return 1
+    } else if (a.end.row > b.end.row) {
+      return -1
+    } else {
+      if (a.end.column < b.end.column) {
+        return 1
+      } else if (a.end.column > b.end.column) {
+        return -1
+      } else {
+        return 0
+      }
+    }
+  }
+
   public getPieceAtPosition(position: Position): ChessPiece | null {
     for (let i = 0; i < this.pieces.length; i++) {
       const piecePos = this.pieces[i].getPosition()
@@ -325,7 +341,7 @@ export default class ChessBoard {
 
     const allMoves = piece.generateValidMovePositions()
     const validMoves = this.pruneMoves(allMoves)
-
+    // validMoves.sort(this.moveInformationSorter)
     return validMoves
   }
 

@@ -3,6 +3,7 @@ import BishopPiece from '../src/BishopPiece'
 import ChessBoard, { Configuration, PieceArrangement } from '../src/ChessBoard'
 import { Color, MoveInformation } from '../src/ChessPiece'
 import KingPiece from '../src/KingPiece'
+import KnightPiece from '../src/KnightPiece'
 import PawnPiece from '../src/PawnPiece'
 import RookPiece from '../src/RookPiece'
 
@@ -419,6 +420,32 @@ describe('King test', () => {
 
     const validMoves = board.generateMovesForPiece({ row: 7, column: 0 })
     const expected: MoveInformation[] = []
+    expect(validMoves).toEqual(expected)
+  })
+})
+
+describe('Knight test', () => {
+  it('Knight range test', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.WHITE, { row: 3, column: 4 }, KnightPiece)
+      .placePiece(Color.WHITE, { row: 7, column: 0 }, KingPiece)
+      .placePiece(Color.BLACK, { row: 7, column: 7 }, KingPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 3, column: 4 })
+    const expected: MoveInformation[] = [
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 1, column: 3 } },
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 1, column: 5 } },
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 2, column: 2 } },
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 2, column: 6 } },
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 4, column: 2 } },
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 4, column: 6 } },
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 5, column: 3 } },
+      { isCapture: false, start: { row: 3, column: 4 }, end: { row: 5, column: 5 } }
+    ]
     expect(validMoves).toEqual(expected)
   })
 })

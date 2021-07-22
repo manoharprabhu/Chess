@@ -39,6 +39,13 @@ export default abstract class ChessPiece {
     return true
   }
 
+  public getDistance(piece: ChessPiece): number {
+    return Math.max(
+      Math.abs(this.position.row - piece.position.row),
+      Math.abs(this.position.column - piece.position.column)
+    )
+  }
+
   protected traverseAndFindMoves(startPosition: Position, direction: Position): MoveInformation[] {
     let currentPosition: Position = startPosition
     const moves: MoveInformation[] = []

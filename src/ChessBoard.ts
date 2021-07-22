@@ -132,7 +132,7 @@ export default class ChessBoard {
   private findMyKing(): KingPiece | null {
     for (let i = 0; i < this.pieces.length; i++) {
       if (this.pieces[i].getColor() === this.currentPlayer && this.pieces[i] instanceof KingPiece) {
-        return this.pieces[i]
+        return this.pieces[i] as KingPiece
       }
     }
     return null
@@ -171,6 +171,10 @@ export default class ChessBoard {
             return true
           }
           break
+      }
+
+      if (piece instanceof KingPiece && piece.getDistance(myKing) === 1) {
+        return true
       }
 
       if (this.checkOppositeKnights(myKing)) {

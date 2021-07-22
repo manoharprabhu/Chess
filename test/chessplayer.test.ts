@@ -1,3 +1,4 @@
+import { platform } from 'os'
 import BishopPiece from '../src/BishopPiece'
 import ChessBoard, { Configuration, PieceArrangement } from '../src/ChessBoard'
 import { Color, MoveInformation } from '../src/ChessPiece'
@@ -346,6 +347,78 @@ describe('Rook test', () => {
       { isCapture: false, start: { row: 4, column: 4 }, end: { row: 5, column: 4 } },
       { isCapture: true, start: { row: 4, column: 4 }, end: { row: 6, column: 4 } }
     ]
+    expect(validMoves).toEqual(expected)
+  })
+})
+
+describe('King test', () => {
+  it('King range test', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.BLACK, { row: 2, column: 2 }, KingPiece)
+      .placePiece(Color.WHITE, { row: 2, column: 5 }, KingPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 2, column: 5 })
+    const expected: MoveInformation[] = [
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 1, column: 4 } },
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 1, column: 5 } },
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 1, column: 6 } },
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 2, column: 4 } },
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 2, column: 6 } },
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 3, column: 4 } },
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 3, column: 5 } },
+      { isCapture: false, start: { row: 2, column: 5 }, end: { row: 3, column: 6 } }
+    ]
+    expect(validMoves).toEqual(expected)
+  })
+  it('King restricted range test', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.BLACK, { row: 6, column: 2 }, KingPiece)
+      .placePiece(Color.WHITE, { row: 7, column: 0 }, KingPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 7, column: 0 })
+    const expected: MoveInformation[] = [
+      { isCapture: false, start: { row: 7, column: 0 }, end: { row: 6, column: 0 } }
+    ]
+    expect(validMoves).toEqual(expected)
+  })
+
+  it('King capture test', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.BLACK, { row: 6, column: 2 }, KingPiece)
+      .placePiece(Color.WHITE, { row: 7, column: 0 }, KingPiece)
+      .placePiece(Color.BLACK, { row: 6, column: 0 }, PawnPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 7, column: 0 })
+    const expected: MoveInformation[] = [
+      { isCapture: true, start: { row: 7, column: 0 }, end: { row: 6, column: 0 } }
+    ]
+    expect(validMoves).toEqual(expected)
+  })
+
+  it('King no moves test', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.BLACK, { row: 6, column: 2 }, KingPiece)
+      .placePiece(Color.WHITE, { row: 7, column: 0 }, KingPiece)
+      .placePiece(Color.WHITE, { row: 6, column: 0 }, PawnPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 7, column: 0 })
+    const expected: MoveInformation[] = []
     expect(validMoves).toEqual(expected)
   })
 })

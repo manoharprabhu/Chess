@@ -59,6 +59,8 @@ export default class PawnPiece extends ChessPiece {
       validSquares.push({ isCapture: true, start: this.position, end: rightDiagonal })
     }
 
+    //TODO: en passant
+
     return validSquares
   }
 }

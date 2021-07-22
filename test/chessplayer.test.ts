@@ -448,4 +448,24 @@ describe('Knight test', () => {
     ]
     expect(validMoves).toEqual(expected)
   })
+  it('Knight capture and block test', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.WHITE, { row: 1, column: 6 }, KnightPiece)
+      .placePiece(Color.WHITE, { row: 7, column: 0 }, KingPiece)
+      .placePiece(Color.BLACK, { row: 7, column: 7 }, KingPiece)
+      .placePiece(Color.BLACK, { row: 3, column: 7 }, RookPiece)
+      .placePiece(Color.WHITE, { row: 2, column: 4 }, KnightPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 1, column: 6 })
+    const expected: MoveInformation[] = [
+      { isCapture: false, start: { row: 1, column: 6 }, end: { row: 0, column: 4 } },
+      { isCapture: false, start: { row: 1, column: 6 }, end: { row: 3, column: 5 } },
+      { isCapture: true, start: { row: 1, column: 6 }, end: { row: 3, column: 7 } }
+    ]
+    expect(validMoves).toEqual(expected)
+  })
 })

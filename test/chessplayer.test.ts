@@ -186,6 +186,27 @@ describe('Black Pawn tests', () => {
     ]
     expect(validMoves).toEqual(expected)
   })
+
+  it('Test pawn capture with discovery check', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.BLACK, { row: 7, column: 0 }, KingPiece)
+      .placePiece(Color.BLACK, { row: 7, column: 4 }, RookPiece)
+      .placePiece(Color.BLACK, { row: 2, column: 5 }, PawnPiece)
+      .placePiece(Color.WHITE, { row: 1, column: 4 }, PawnPiece)
+      .placePiece(Color.WHITE, { row: 0, column: 4 }, KingPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 1, column: 4 })
+
+    const expected: MoveInformation[] = [
+      { isCapture: false, start: { row: 1, column: 4 }, end: { row: 2, column: 4 } },
+      { isCapture: false, start: { row: 1, column: 4 }, end: { row: 3, column: 4 } }
+    ]
+    expect(validMoves).toEqual(expected)
+  })
 })
 
 describe('Bishop tests', () => {

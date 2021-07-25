@@ -6,7 +6,27 @@ export default class QueenPiece extends ChessPiece {
     super(color, position, board)
   }
 
+  private offsets: Position[] = [
+    { row: 0, column: 1 },
+    { row: 1, column: 0 },
+    { row: -1, column: 0 },
+    { row: 0, column: -1 },
+    { row: 1, column: -1 },
+    { row: 1, column: 1 },
+    { row: -1, column: -1 },
+    { row: -1, column: 1 }
+  ]
+
   public generateValidMovePositions(): MoveInformation[] {
-    throw new Error('Method not implemented.')
+    const startPosition = this.getPosition()
+    const moves: MoveInformation[] = []
+
+    for (let i = 0; i < this.offsets.length; i++) {
+      const result = this.traverseAndFindMoves(startPosition, this.offsets[i])
+      result.forEach(move => {
+        moves.push(move)
+      })
+    }
+    return moves
   }
 }

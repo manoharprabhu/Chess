@@ -5,6 +5,7 @@ import { Color, MoveInformation } from '../src/ChessPiece'
 import KingPiece from '../src/KingPiece'
 import KnightPiece from '../src/KnightPiece'
 import PawnPiece from '../src/PawnPiece'
+import QueenPiece from '../src/QueenPiece'
 import RookPiece from '../src/RookPiece'
 
 describe('White Pawn tests', () => {
@@ -465,6 +466,39 @@ describe('Knight test', () => {
       { isCapture: false, start: { row: 1, column: 6 }, end: { row: 0, column: 4 } },
       { isCapture: false, start: { row: 1, column: 6 }, end: { row: 3, column: 5 } },
       { isCapture: true, start: { row: 1, column: 6 }, end: { row: 3, column: 7 } }
+    ]
+    expect(validMoves).toEqual(expected)
+  })
+})
+
+describe('Queen test', () => {
+  it('Queen range test', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.WHITE, { row: 4, column: 6 }, QueenPiece)
+      .placePiece(Color.WHITE, { row: 7, column: 0 }, KingPiece)
+      .placePiece(Color.BLACK, { row: 7, column: 7 }, KingPiece)
+      .placePiece(Color.WHITE, { row: 4, column: 5 }, PawnPiece)
+      .placePiece(Color.WHITE, { row: 5, column: 5 }, PawnPiece)
+      .placePiece(Color.WHITE, { row: 5, column: 6 }, PawnPiece)
+      .placePiece(Color.BLACK, { row: 4, column: 7 }, PawnPiece)
+
+    const validMoves = board.generateMovesForPiece({ row: 4, column: 6 })
+    const expected: MoveInformation[] = [
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 0, column: 2 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 0, column: 6 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 1, column: 3 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 1, column: 6 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 2, column: 4 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 2, column: 6 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 3, column: 5 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 3, column: 6 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 3, column: 7 } },
+      { isCapture: true, start: { row: 4, column: 6 }, end: { row: 4, column: 7 } },
+      { isCapture: false, start: { row: 4, column: 6 }, end: { row: 5, column: 7 } }
     ]
     expect(validMoves).toEqual(expected)
   })

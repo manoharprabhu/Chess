@@ -1,6 +1,5 @@
-import { platform } from 'os'
 import BishopPiece from '../src/BishopPiece'
-import ChessBoard, { Configuration, PieceArrangement } from '../src/ChessBoard'
+import ChessBoard, { PieceArrangement } from '../src/ChessBoard'
 import { Color, MoveInformation } from '../src/ChessPiece'
 import KingPiece from '../src/KingPiece'
 import KnightPiece from '../src/KnightPiece'

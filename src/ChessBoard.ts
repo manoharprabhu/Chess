@@ -104,14 +104,14 @@ export default class ChessBoard {
     this.pieces.push(new KingPiece(Color.WHITE, { row: 0, column: 4 }, this))
 
     // black pieces
-    this.pieces.push(new RookPiece(Color.BLACK, { row: 6, column: 0 }, this))
-    this.pieces.push(new RookPiece(Color.BLACK, { row: 6, column: 7 }, this))
-    this.pieces.push(new KnightPiece(Color.BLACK, { row: 6, column: 1 }, this))
-    this.pieces.push(new KnightPiece(Color.BLACK, { row: 6, column: 6 }, this))
-    this.pieces.push(new BishopPiece(Color.BLACK, { row: 6, column: 2 }, this))
-    this.pieces.push(new BishopPiece(Color.BLACK, { row: 6, column: 5 }, this))
-    this.pieces.push(new QueenPiece(Color.BLACK, { row: 6, column: 3 }, this))
-    this.pieces.push(new KingPiece(Color.BLACK, { row: 6, column: 4 }, this))
+    this.pieces.push(new RookPiece(Color.BLACK, { row: 7, column: 0 }, this))
+    this.pieces.push(new RookPiece(Color.BLACK, { row: 7, column: 7 }, this))
+    this.pieces.push(new KnightPiece(Color.BLACK, { row: 7, column: 1 }, this))
+    this.pieces.push(new KnightPiece(Color.BLACK, { row: 7, column: 6 }, this))
+    this.pieces.push(new BishopPiece(Color.BLACK, { row: 7, column: 2 }, this))
+    this.pieces.push(new BishopPiece(Color.BLACK, { row: 7, column: 5 }, this))
+    this.pieces.push(new QueenPiece(Color.BLACK, { row: 7, column: 3 }, this))
+    this.pieces.push(new KingPiece(Color.BLACK, { row: 7, column: 4 }, this))
   }
 
   private pruneMoves(allMoves: MoveInformation[]): MoveInformation[] {
@@ -347,37 +347,6 @@ export default class ChessBoard {
     const validMoves = this.pruneMoves(allMoves)
     validMoves.sort(this.moveInformationSorter)
     return validMoves
-  }
-
-  public prettyPrint() {
-    const board: string[][] = []
-    for (let i = 0; i < 8; i++) {
-      board.push([])
-      for (let k = 0; k < 8; k++) {
-        board[i].push('.')
-      }
-    }
-
-    this.pieces.forEach(piece => {
-      const pos = piece.getPosition()
-      let character = '.'
-      if (piece instanceof PawnPiece) {
-        character = 'P'
-      } else if (piece instanceof BishopPiece) {
-        character = 'B'
-      } else if (piece instanceof RookPiece) {
-        character = 'R'
-      } else if (piece instanceof KnightPiece) {
-        character = 'N'
-      } else if (piece instanceof KingPiece) {
-        character = 'K'
-      } else if (piece instanceof QueenPiece) {
-        character = 'Q'
-      }
-      board[7 - pos.row][pos.column] = character
-    })
-
-    console.table(board)
   }
 }
 

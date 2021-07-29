@@ -7,6 +7,99 @@ import PawnPiece from '../src/PawnPiece'
 import QueenPiece from '../src/QueenPiece'
 import RookPiece from '../src/RookPiece'
 
+describe('Board tests', () => {
+  it('Get current player', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    expect(board.getCurrentPlayer()).toEqual(Color.WHITE)
+
+    const board2 = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.BLACK
+    })
+    expect(board2.getCurrentPlayer()).toEqual(Color.BLACK)
+  })
+
+  it('Place piece at occupied location', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    expect(() => {
+      board
+        .placePiece(Color.WHITE, { row: 5, column: 4 }, BishopPiece)
+        .placePiece(Color.BLACK, { row: 5, column: 4 }, PawnPiece)
+    }).toThrowError(Error)
+  })
+
+  it('Generate move for non existant piece', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    expect(() => {
+      board.generateMovesForPiece({ row: 3, column: 5 })
+    }).toThrowError(Error)
+  })
+
+  it('Move piece out of turn', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.EMPTY,
+      firstPlayer: Color.WHITE
+    })
+    board
+      .placePiece(Color.WHITE, { row: 7, column: 0 }, KingPiece)
+      .placePiece(Color.BLACK, { row: 7, column: 7 }, KingPiece)
+
+    expect(() => {
+      board.generateMovesForPiece({ row: 7, column: 7 })
+    }).toThrowError(Error)
+  })
+
+  it('Initialize default', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.DEFAULT
+    })
+    expect(board.getCurrentPlayer()).toEqual(Color.WHITE)
+
+    expect(board.getPieceAtPosition({ row: 0, column: 0 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 1 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 2 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 3 })).toBeInstanceOf(QueenPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 4 })).toBeInstanceOf(KingPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 5 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 6 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 7 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 0 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 1 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 2 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 3 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 4 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 5 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 6 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 7 })).toBeInstanceOf(PawnPiece)
+
+    expect(board.getPieceAtPosition({ row: 7, column: 0 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 1 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 2 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 3 })).toBeInstanceOf(QueenPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 4 })).toBeInstanceOf(KingPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 5 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 6 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 7 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 0 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 1 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 2 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 3 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 4 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 5 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 6 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 7 })).toBeInstanceOf(PawnPiece)
+  })
+})
+
 describe('White Pawn tests', () => {
   it('Test pawn initial moves', () => {
     const board = new ChessBoard({ pieceArrangement: PieceArrangement.EMPTY })

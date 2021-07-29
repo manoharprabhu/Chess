@@ -79,8 +79,63 @@ export default class ChessBoard {
     if (!this.configuration.fen) {
       throw new Error('FEN not defined')
     }
+    const parts: string[] = this.configuration.fen.split(' ')
+    if (parts.length !== 6) {
+      throw new Error('FEN must have 6 parts')
+    }
 
-    throw new Error('Not Implemented')
+    // Parse piece info
+    const ranks: string[] = parts[0].split('/')
+    for (let row = 0; row < ranks.length; row++) {
+      let colIndex = 0
+      const colChars = ranks[row].split('')
+      for (let col = 0; col < colChars.length; col++) {
+        const currentChar = colChars[col]
+        if (currentChar >= '1' && currentChar <= '9') {
+          colIndex += parseInt(currentChar)
+        } else {
+          const piece = this.makePieceForFen(currentChar, row, colIndex)
+          if (piece === null) {
+            throw new Error('Invalid character in FEN')
+          }
+          this.pieces.push(piece)
+          colIndex++
+        }
+      }
+    }
+
+    // Parse first color
+
+    // Parse castling ability
+
+    // Parse en passant target square
+
+    // Parse halfmove clock
+
+    // Parse fullmove
+  }
+
+  private makePieceForFen(currentChar: string, row: number, col: number): ChessPiece | null {
+    let color: Color = Color.WHITE
+    if (currentChar >= 'a' && currentChar <= 'z') {
+      color = Color.BLACK
+    }
+
+    if (currentChar.toLowerCase() === 'r') {
+      return new RookPiece(color, { row: 7 - row, column: col }, this)
+    } else if (currentChar.toLowerCase() === 'n') {
+      return new KnightPiece(color, { row: 7 - row, column: col }, this)
+    } else if (currentChar.toLowerCase() === 'b') {
+      return new BishopPiece(color, { row: 7 - row, column: col }, this)
+    } else if (currentChar.toLowerCase() === 'q') {
+      return new QueenPiece(color, { row: 7 - row, column: col }, this)
+    } else if (currentChar.toLowerCase() === 'k') {
+      return new KingPiece(color, { row: 7 - row, column: col }, this)
+    } else if (currentChar.toLowerCase() === 'p') {
+      return new PawnPiece(color, { row: 7 - row, column: col }, this)
+    }
+
+    return null
   }
 
   private initializeDefaultArrangement() {

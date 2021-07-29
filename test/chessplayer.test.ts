@@ -595,3 +595,73 @@ describe('Queen test', () => {
     expect(validMoves).toEqual(expected)
   })
 })
+
+describe('FEN test', () => {
+  it('No fen', () => {
+    expect(() => {
+      const board = new ChessBoard({ pieceArrangement: PieceArrangement.WITHFEN })
+    }).toThrowError()
+  })
+
+  it('Invalid fen', () => {
+    expect(() => {
+      const board = new ChessBoard({
+        pieceArrangement: PieceArrangement.WITHFEN,
+        fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+      })
+    }).toThrowError()
+  })
+
+  it('Check default fen', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.WITHFEN,
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    })
+    expect(board.getPieceAtPosition({ row: 0, column: 0 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 1 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 2 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 3 })).toBeInstanceOf(QueenPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 4 })).toBeInstanceOf(KingPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 5 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 6 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 7 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 0 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 1 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 2 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 3 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 4 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 5 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 6 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 1, column: 7 })).toBeInstanceOf(PawnPiece)
+
+    expect(board.getPieceAtPosition({ row: 7, column: 0 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 1 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 2 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 3 })).toBeInstanceOf(QueenPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 4 })).toBeInstanceOf(KingPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 5 })).toBeInstanceOf(BishopPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 6 })).toBeInstanceOf(KnightPiece)
+    expect(board.getPieceAtPosition({ row: 7, column: 7 })).toBeInstanceOf(RookPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 0 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 1 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 2 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 3 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 4 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 5 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 6 })).toBeInstanceOf(PawnPiece)
+    expect(board.getPieceAtPosition({ row: 6, column: 7 })).toBeInstanceOf(PawnPiece)
+
+    expect(board.getPieceAtPosition({ row: 0, column: 0 })!.getColor()).toEqual(Color.WHITE)
+    expect(board.getPieceAtPosition({ row: 7, column: 0 })!.getColor()).toEqual(Color.BLACK)
+  })
+
+  it('Check fen', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.WITHFEN,
+      fen: '8/8/8/8/8/8/8/3QK3 w KQkq - 0 1'
+    })
+    expect(board.getPieceAtPosition({ row: 0, column: 3 })).toBeInstanceOf(QueenPiece)
+    expect(board.getPieceAtPosition({ row: 0, column: 4 })).toBeInstanceOf(KingPiece)
+    expect(board.getPieceAtPosition({ row: 5, column: 5 })).toBeNull()
+  })
+})

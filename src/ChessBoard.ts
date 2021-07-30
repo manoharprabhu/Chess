@@ -10,6 +10,14 @@ export default class ChessBoard {
   private pieces: ChessPiece[] = []
   private currentPlayer: Color
   private configuration: Configuration
+  private whiteCastleKingSide: boolean
+  private whiteCastleQueenSide: boolean
+  private blackCastleKingSide: boolean
+  private blackCastleQueenSide: boolean
+  private enPassantTargetSquare: string
+  private halfMoveClock: number
+  private fullMoveClock: number
+
   private directions: string[] = [
     'UP',
     'UPRIGHT',
@@ -32,7 +40,13 @@ export default class ChessBoard {
   ]
   constructor(configuration: Configuration) {
     this.configuration = configuration
-
+    this.whiteCastleKingSide = true
+    this.whiteCastleQueenSide = true
+    this.blackCastleKingSide = true
+    this.blackCastleQueenSide = true
+    this.enPassantTargetSquare = '-'
+    this.halfMoveClock = 0
+    this.fullMoveClock = 0
     this.currentPlayer = configuration.firstPlayer ? configuration.firstPlayer : Color.WHITE
     switch (configuration.pieceArrangement) {
       case PieceArrangement.DEFAULT:
@@ -105,14 +119,43 @@ export default class ChessBoard {
     }
 
     // Parse first color
+    if (parts[1] === 'w') {
+      this.currentPlayer = Color.WHITE
+    }
+    if (parts[1] === 'b') {
+      this.currentPlayer = Color.BLACK
+    }
 
     // Parse castling ability
+    if (parts[2].indexOf('K') !== -1) {
+      this.whiteCastleKingSide = true
+    } else {
+      this.whiteCastleKingSide = false
+    }
+    if (parts[2].indexOf('Q') !== -1) {
+      this.whiteCastleQueenSide = true
+    } else {
+      this.whiteCastleQueenSide = false
+    }
+    if (parts[2].indexOf('k') !== -1) {
+      this.blackCastleKingSide = true
+    } else {
+      this.blackCastleKingSide = false
+    }
+    if (parts[2].indexOf('q') !== -1) {
+      this.blackCastleQueenSide = true
+    } else {
+      this.blackCastleQueenSide = false
+    }
 
     // Parse en passant target square
+    this.enPassantTargetSquare = parts[3]
 
     // Parse halfmove clock
+    this.halfMoveClock = parseInt(parts[4])
 
     // Parse fullmove
+    this.fullMoveClock = parseInt(parts[5])
   }
 
   private makePieceForFen(currentChar: string, row: number, col: number): ChessPiece | null {
@@ -389,6 +432,40 @@ export default class ChessBoard {
     return this.currentPlayer
   }
 
+  public isKingSideCastlingAllowed(color: Color) {
+    switch (color) {
+      case Color.WHITE:
+        return this.whiteCastleKingSide
+      case Color.BLACK:
+        return this.blackCastleKingSide
+      default:
+        return true
+    }
+  }
+
+  public isQueenSideCastlingAllowed(color: Color) {
+    switch (color) {
+      case Color.WHITE:
+        return this.whiteCastleQueenSide
+      case Color.BLACK:
+        return this.blackCastleQueenSide
+      default:
+        return true
+    }
+  }
+
+  public getEnPassantTarget(): string {
+    return this.enPassantTargetSquare
+  }
+
+  public getHalfmoveClock() {
+    return this.halfMoveClock
+  }
+
+  public getFullmoveClock() {
+    return this.fullMoveClock
+  }
+
   public generateMovesForPiece(position: Position): MoveInformation[] {
     const piece = this.getPieceAtPosition(position)
     if (!piece) {
@@ -409,6 +486,10 @@ export interface Configuration {
   pieceArrangement: PieceArrangement
   firstPlayer?: Color
   fen?: string
+  whiteCastleKingSide?: boolean
+  whiteCastleQueenSide?: boolean
+  blackCastleKingSide?: boolean
+  blackCastleQueenSide?: boolean
 }
 
 export enum PieceArrangement {

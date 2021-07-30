@@ -655,7 +655,7 @@ describe('FEN test', () => {
     expect(board.getPieceAtPosition({ row: 7, column: 0 })!.getColor()).toEqual(Color.BLACK)
   })
 
-  it('Check fen', () => {
+  it('Check fen 1', () => {
     const board = new ChessBoard({
       pieceArrangement: PieceArrangement.WITHFEN,
       fen: '8/8/8/8/8/8/8/3QK3 w KQkq - 0 1'
@@ -663,5 +663,22 @@ describe('FEN test', () => {
     expect(board.getPieceAtPosition({ row: 0, column: 3 })).toBeInstanceOf(QueenPiece)
     expect(board.getPieceAtPosition({ row: 0, column: 4 })).toBeInstanceOf(KingPiece)
     expect(board.getPieceAtPosition({ row: 5, column: 5 })).toBeNull()
+  })
+
+  it('Check fen 2', () => {
+    const board = new ChessBoard({
+      pieceArrangement: PieceArrangement.WITHFEN,
+      fen: '8/8/8/8/8/8/8/3QK3 b Kk c6 0 1'
+    })
+
+    expect(board.isKingSideCastlingAllowed(Color.WHITE)).toBeTruthy()
+    expect(board.isKingSideCastlingAllowed(Color.BLACK)).toBeTruthy()
+
+    expect(board.isQueenSideCastlingAllowed(Color.WHITE)).toBeFalsy()
+    expect(board.isQueenSideCastlingAllowed(Color.BLACK)).toBeFalsy()
+
+    expect(board.getEnPassantTarget()).toEqual('c6')
+    expect(board.getHalfmoveClock()).toEqual(0)
+    expect(board.getFullmoveClock()).toEqual(1)
   })
 })
